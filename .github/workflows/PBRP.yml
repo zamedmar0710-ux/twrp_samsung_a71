@@ -17,10 +17,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3
 
-    - name: Setup Google Repo Tool
+    - name: Setup Google Repo Tool (Fixed URL)
       run: |
         mkdir ~/bin
         curl https://googleapis.com > ~/bin/repo
+        # Fallback to alternative official URL if storage link fails
+        if grep -q "DOCTYPE html" ~/bin/repo; then
+          curl https://githubusercontent.com > ~/bin/repo
+        fi
         chmod a+x ~/bin/repo
         sudo ln -sf ~/bin/repo /usr/bin/repo
 
@@ -29,7 +33,7 @@ jobs:
         mkdir pbrp && cd pbrp
         git config --global user.name "ZamMichaelEmrich"
         git config --global user.email "zamedmar0710@gmail.com"
-        repo init -u https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-12.1 --depth=1
+        repo init -u https://github.com -b android-12.1 --depth=1
         repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 
     - name: Clone Geekmaster21 Galaxy A71 Tree
