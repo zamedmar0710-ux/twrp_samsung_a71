@@ -12,10 +12,10 @@ jobs:
         sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo docker image prune -a -f
 
-    - name: Install Android Build Packages & Official Repo Tool
+    - name: Install Android Build Packages
       run: |
         sudo apt-get update
-        sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3 repo
+        sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3
 
     - name: Initialize PBRP 12.1 Source Manifest
       run: |
@@ -24,9 +24,13 @@ jobs:
         git config --global user.email "zamedmar0710@gmail.com"
         git config --global color.ui false
         
-        # Using the clean system-installed repo command without downloading external files
-        repo init -u https://github.com -b android-12.1 --depth=1 --no-repo-verify
-        repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
+        # Download the standalone python-executable script directly into the working directory
+        curl -sSL https://githubusercontent.com > ./repo
+        chmod a+x ./repo
+        
+        # Run the standalone script explicitly using python3 to bypass system path configs
+        python3 ./repo init -u https://github.com -b android-12.1 --depth=1 --no-repo-verify
+        python3 ./repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 
     - name: Clone Geekmaster21 Galaxy A71 Tree
       run: |
