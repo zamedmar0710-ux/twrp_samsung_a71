@@ -24,11 +24,13 @@ jobs:
         git config --global user.email "zamedmar0710@gmail.com"
         git config --global color.ui false
         
-        # Download straight from Google's official source mirror instead of GitHub
-        curl -sSL https://googleapis.com > ./repo
+        # We manually build a local minimal stub launcher to avoid downloading files from Google
+        mkdir -p .repo
+        git clone https://googlesource.com .repo/repo --depth=1
+        cp .repo/repo/repo ./repo
         chmod a+x ./repo
         
-        # Initialize and sync using the secure local path
+        # Initialize and sync using our offline local launcher copy
         python3 ./repo init -u https://github.com -b android-12.1 --depth=1 --no-repo-verify
         python3 ./repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 
