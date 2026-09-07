@@ -24,11 +24,11 @@ jobs:
         git config --global user.email "zamedmar0710@gmail.com"
         git config --global color.ui false
         
-        # Download the standalone python-executable script directly into the working directory
-        curl -sSL https://githubusercontent.com > ./repo
+        # Download straight from Google's official source mirror instead of GitHub
+        curl -sSL https://googleapis.com > ./repo
         chmod a+x ./repo
         
-        # Run the standalone script explicitly using python3 to bypass system path configs
+        # Initialize and sync using the secure local path
         python3 ./repo init -u https://github.com -b android-12.1 --depth=1 --no-repo-verify
         python3 ./repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 
