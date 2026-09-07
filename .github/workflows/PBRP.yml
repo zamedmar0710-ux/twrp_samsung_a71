@@ -15,7 +15,14 @@ jobs:
     - name: Install Android Build Packages
       run: |
         sudo apt-get update
-        sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3 repo
+        sudo apt-get install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32readline-dev lib32z1-dev libelf-dev liblz4-tool libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev python3
+
+    - name: Setup Manual Clean Repo Launcher
+      run: |
+        mkdir -p ~/bin
+        curl -sSL https://googleapis.com > ~/bin/repo
+        chmod a+x ~/bin/repo
+        sudo ln -sf ~/bin/repo /usr/bin/repo
 
     - name: Initialize PBRP 12.1 Source Manifest
       run: |
@@ -23,9 +30,9 @@ jobs:
         git config --global user.name "ZamMichaelEmrich"
         git config --global user.email "zamedmar0710@gmail.com"
         git config --global color.ui false
-        # Using explicit --manifest-url parameter to avoid parsing errors
-        repo init --manifest-url=https://github.com -b android-12.1 --depth=1 --git-lfs
-        repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
+        # Forcing the explicit, complete repo initialization string
+        /usr/bin/repo init -u https://github.com -b android-12.1 --depth=1 --no-repo-verify
+        /usr/bin/repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 
     - name: Clone Geekmaster21 Galaxy A71 Tree
       run: |
