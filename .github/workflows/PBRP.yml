@@ -27,8 +27,8 @@ jobs:
     - name: Initialize PBRP 12.1 Source Manifest
       run: |
         mkdir pbrp && cd pbrp
-        git config --global user.name "A71-Builder"
-        git config --global user.email "a71builder@email.com"
+        git config --global user.name "ZamMichaelEmrich"
+        git config --global user.email "zamedmar0710@gmail.com"
         repo init -u https://github.com/PitchBlackRecoveryProject/manifest_pb -b android-12.1 --depth=1
         repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 
