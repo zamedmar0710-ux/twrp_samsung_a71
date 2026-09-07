@@ -22,7 +22,9 @@ jobs:
         mkdir pbrp && cd pbrp
         git config --global user.name "ZamMichaelEmrich"
         git config --global user.email "zamedmar0710@gmail.com"
-        repo init -u https://github.com -b android-12.1 --depth=1
+        git config --global color.ui false
+        # Using explicit --manifest-url parameter to avoid parsing errors
+        repo init --manifest-url=https://github.com -b android-12.1 --depth=1 --git-lfs
         repo sync -c -j$(nproc) --force-sync --no-clone-bundle --no-tags
 
     - name: Clone Geekmaster21 Galaxy A71 Tree
