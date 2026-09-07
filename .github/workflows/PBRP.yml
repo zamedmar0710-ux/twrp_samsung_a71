@@ -20,11 +20,7 @@ jobs:
     - name: Setup Google Repo Tool (Fixed URL)
       run: |
         mkdir ~/bin
-        curl https://googleapis.com > ~/bin/repo
-        # Fallback to alternative official URL if storage link fails
-        if grep -q "DOCTYPE html" ~/bin/repo; then
-          curl https://githubusercontent.com > ~/bin/repo
-        fi
+        curl -sSL https://githubusercontent.com > ~/bin/repo
         chmod a+x ~/bin/repo
         sudo ln -sf ~/bin/repo /usr/bin/repo
 
@@ -47,7 +43,7 @@ jobs:
         echo "TW_THEME := portrait_hdpi" >> BoardConfig.mk
         echo "PB_BUILD_NAME := Unofficial" >> BoardConfig.mk
         echo "PB_RECOVERY_VERSION := 4.0" >> BoardConfig.mk
-        echo "PB_MAINTAINER := Geekmaster21_A71" >> BoardConfig.mk
+        echo "PB_MAINTAINER := ZamMichaelEmrich" >> BoardConfig.mk
 
     - name: Run Compilation Matrix
       run: |
